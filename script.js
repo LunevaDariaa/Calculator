@@ -1,43 +1,79 @@
 const numberBtn = document.querySelectorAll('[data-number]');
 const operandBtn = document.querySelectorAll('[data-operand]');
-
 const screen = document.querySelector('.screen');
-//screen.innerHTML = '';
+const equalBtn = document.querySelector('#equals_btn');
 
 let currentNum = '';
+let currentOperand = '';
+let firstNum;
+let secondNum;
+
+const handleNumClicked = num => {
+  currentNum += num.innerHTML;
+  updateScreen();
+};
+
+const handleOperandClicked = operand => {
+  if (currentNum !== '') {
+    if (firstNum === undefined) {
+      firstNum = Number(currentNum);
+    } else if (firstNum !== '') {
+      secondNum = Number(currentNum);
+    }
+    currentOperand = operand.getAttribute('value');
+    currentNum = '';
+    updateScreen();
+  }
+};
+
+//Equal
+const equal = equalBtn.addEventListener('click', function () {
+  if (currentNum !== '') {
+    secondNum = Number(currentNum);
+    if (currentOperand === '+') firstNum = add(firstNum, secondNum);
+    else if (currentOperand === '-') firstNum = subtract(firstNum, secondNum);
+    else if (currentOperand === '/') firstNum = divide(firstNum, secondNum);
+    else if (currentOperand === '*') firstNum = multiply(firstNum, secondNum);
+
+    currentNum = firstNum; // Convert the result to a string for display
+    currentOperand = '';
+    updateScreen();
+  }
+});
+
+const updateScreen = () => {
+  screen.innerHTML = currentNum + ' ' + currentOperand;
+  console.log(currentNum);
+};
+
 numberBtn.forEach(function (num) {
   num.addEventListener('click', function () {
-    currentNum += num.innerHTML;
-    screen.innerHTML = currentNum;
-    console.log(num.innerHTML);
-    console.log(currentNum);
+    handleNumClicked(num);
   });
 });
 
 operandBtn.forEach(function (operand) {
   operand.addEventListener('click', function () {
-    if (operand.toString() === '-') {
-      console.log(typeof toString(operand));
-    }
+    handleOperandClicked(operand);
   });
 });
 
-//add
+// add
 const add = function (firstNum, secondNum) {
   return firstNum + secondNum;
 };
 
-//multiply
+// multiply
 const multiply = function (firstNum, secondNum) {
   return firstNum * secondNum;
 };
 
-//divide
+// divide
 const divide = function (firstNum, secondNum) {
   return firstNum / secondNum;
 };
 
-//substract
-const substract = function (firstNum, secondNum) {
+// subtract
+const subtract = function (firstNum, secondNum) {
   return firstNum - secondNum;
 };
