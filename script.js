@@ -2,6 +2,8 @@ const numberBtn = document.querySelectorAll('[data-number]');
 const operandBtn = document.querySelectorAll('[data-operand]');
 const screen = document.querySelector('.screen');
 const equalBtn = document.querySelector('#equals_btn');
+const deleteBtn = document.querySelector('#delete_btn');
+const clearBtn = document.querySelector('#clear_btn');
 
 let currentNum = '';
 let currentOperand = '';
@@ -12,6 +14,19 @@ const handleNumClicked = num => {
   currentNum += num.innerHTML;
   updateScreen();
 };
+
+const clear = clearBtn.addEventListener('click', function () {
+  currentNum = currentNum.slice(0, -1);
+  updateScreen();
+});
+
+const deletes = deleteBtn.addEventListener('click', function () {
+  currentNum = '';
+  firstNum = undefined;
+  secondNum = '';
+  currentOperand = '';
+  updateScreen();
+});
 
 const handleOperandClicked = operand => {
   if (currentNum !== '') {
